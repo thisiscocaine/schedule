@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Schedule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --diamond: #F6F8FA;
+            --ruby: #9B1D2F;
+            --gold: #D4A017;
+            --imperial-onyx: #1A2525;
+            --velvet-maroon: #4A0E1F;
+            --champagne-gold: #E8D4A2;
+            --obsidian-mist: #2D2F31;
+            --emerald-eclipse: #2A4B3F;
+            --sapphire-noir: #1B263B;
+            --crimson-royale: #780000;
+            --ivory-pearl: #F1EDEB;
+            --caviar-grey: #3C3F41;
+            --midnight-plum: #2C1B3A;
+            --apple-space-black: #1C2526;
+            --apple-titanium: #D8D9DA;
+            --apple-silver: #E8ECEF;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--apple-space-black), var(--sapphire-noir));
+            font-family: 'SF Pro Display', 'Noto Serif Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: var(--ivory-pearl);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at center, rgba(232, 236, 239, 0.15), transparent);
+            animation: pulse 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.25; }
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0.5rem;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+
+        .table-container {
+            background: rgba(28, 37, 38, 0.45);
+            backdrop-filter: blur(25px) saturate(200%);
+            border: 1px solid var(--apple-titanium);
+            border-radius: 1rem;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(216, 217, 218, 0.15);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            max-height: 75vh;
+            overflow: hidden;
+            width: 95%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .table-container:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(216, 217, 218, 0.25);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(60, 63, 65, 0.25);
+            transition: all 0.3s ease;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+
+        th {
+            background: linear-gradient(45deg, var(--velvet-maroon), var(--crimson-royale));
+            color: var(--apple-silver);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        tr {
+            background: rgba(44, 27, 58, 0.35);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(28, 37, 38, 0.55);
+        }
+
+        tr:hover {
+            background: var(--emerald-eclipse);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .highlight {
+            color: var(--diamond);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--champagne-gold));
+            transition: width 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .highlight:hover::after, .highlight:active::after {
+            width: 70%;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', 'Noto Serif Devanagari', serif;
+            font-size: 2.5rem;
+            color: var(--diamond);
+            text-shadow: 0 0 30px var(--prism-glow), 0 0 50px var(--diamond-clear);
+            animation: diamondGlow 1.5s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            line-height: 1.1;
+            position: relative;
+            display: inline-block; /* Ensure underline fits text width */
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* Space below text */
+            left: 50%;
+            width: 100%; /* Full width underline */
+            height: 4px; /* Thicker for luxury */
+            background: linear-gradient(90deg, var(--gold), var(--champagne-gold));
+            transform: translateX(-50%);
+            animation: underlineGlow 2s ease-in-out infinite alternate;
+            border-radius: 2px; /* Subtle rounding */
+            box-shadow: 0 0 10px rgba(212, 160, 23, 0.5); /* Glow effect */
+        }
+
+        @keyframes diamondGlow {
+            from {
+                text-shadow: 0 0 20px var(--prism-glow), 0 0 30px var(--diamond-clear);
+                transform: scale(1);
+            }
+            to {
+                text-shadow: 0 0 40px var(--prism-glow), 0 0 60px var(--diamond-clear);
+                transform: scale(1.01);
+            }
+        }
+
+        @keyframes underlineGlow {
+            from {
+                box-shadow: 0 0 10px rgba(212, 160, 23, 0.5);
+                width: 100%;
+            }
+            to {
+                box-shadow: 0 0 20px rgba(212, 160, 23, 0.8);
+                width: 110%; /* Slight expansion for animation */
+            }
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h1::after {
+                height: 3.5px;
+                bottom: -6px;
+            }
+            th, td {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 0.3rem;
+            }
+            .table-container {
+                max-height: 70vh;
+                width: 96%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            h1::after {
+                height: 3px;
+                bottom: -5px;
+            }
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+            .table-container {
+                max-height: 68vh;
+            }
+        }
+
+        @media (max-width: 414px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.4rem;
+            }
+            h1::after {
+                height: 2.5px;
+                bottom: -4px;
+            }
+            th, td {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+                line-height: 1.1;
+            }
+            .table-container {
+                max-height: 66vh;
+                border-radius: 0.8rem;
+            }
+            .container {
+                padding: 0.2rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.3rem;
+            }
+            h1::after {
+                height: 2px;
+                bottom: -3px;
+            }
+            th, td {
+                padding: 0.35rem;
+                font-size: 0.75rem;
+            }
+            .table-container {
+                max-height: 65vh;
+            }
+        }
+
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 1.1rem;
+                margin-bottom: 0.3rem;
+            }
+            h1::after {
+                height: 1.8px;
+                bottom: -2.5px;
+            }
+            th, td {
+                padding: 0.3rem;
+                font-size: 0.7rem;
+            }
+            .table-container {
+                max-height: 62vh;
+                border-radius: 0.7rem;
+            }
+            .container {
+                padding: 0.15rem;
+            }
+        }
+
+        @media (max-width: 240px) {
+            h1 {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+            h1::after {
+                height: 1.5px;
+                bottom: -2px;
+            }
+            th, td {
+                padding: 0.25rem;
+                font-size: 0.6rem;
+                line-height: 1;
+            }
+            .table-container {
+                max-height: 60vh;
+                transform: perspective(600px) rotateX(1deg);
+            }
+            .container {
+                padding: 0.1rem;
+            }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -3;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="particle-bg"></div>
+    <div class="container">
+        <h1>पूर्ण कार्य तालिका</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>समय</th>
+                        <th>काम</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="highlight">६:३० – ७:३० बिहान</td>
+                        <td>टाइपिङ अभ्यास</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">७:३० – १०:३० बिहान</td>
+                        <td>Certificate कोर्स</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">१०:३० – ११:३० बिहान</td>
+                        <td>खाना, नुहाउने, विश्राम</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">११:३० – १:३० दिउँसो</td>
+                        <td>Certificate कोर्स (शेष भाग)</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">१:३० – ३:३० दिउँसो</td>
+                        <td>Recovery nap (2 घण्टा)</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">३:३० – ४:३० दिउँसो</td>
+                        <td>Refresh + तयारी</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">४:३० – २:३० राति</td>
+                        <td class="font-bold">10 घण्टा जागिर (काम)</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">२:३० – ६:३० बिहान</td>
+                        <td class="font-bold">Core Sleep (4 घण्टा)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d', { alpha: true });
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = window.innerWidth < 480 ? 50 : 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(232, 236, 239, 0.25)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            particles.forEach(particle => {
+                const dx = particle.x - touch.clientX;
+                const dy = particle.y - touch.clientY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    particle.speedX += dx * 0.01;
+                    particle.speedY += dy * 0.01;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
